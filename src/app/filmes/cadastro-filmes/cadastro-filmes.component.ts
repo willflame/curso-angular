@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { ValidarCamposService } from 'src/app/shared/components/campos/validar-campos.service';
 
+interface IGenderProps {
+  name: string;
+  value: string;
+}
+
 @Component({
   selector: 'dio-cadastro-filmes',
   templateUrl: './cadastro-filmes.component.html',
@@ -10,9 +15,10 @@ import { ValidarCamposService } from 'src/app/shared/components/campos/validar-c
 export class CadastroFilmesComponent implements OnInit {
 
   cadastro: FormGroup;
+  gender: IGenderProps[];
 
   constructor(public validateField: ValidarCamposService,
-    private fb: FormBuilder,) { }
+    private fb: FormBuilder) { }
 
   get f() {
     return this.cadastro.controls;
@@ -30,6 +36,15 @@ export class CadastroFilmesComponent implements OnInit {
       gender: ['', [Validators.required]]
     });
 
+    this.gender = [
+      { name: "Ação", value: "Ação"  },
+      { name: "Aventura", value: "Aventura"  },
+      { name: "Comédia", value: "Comédia"  },
+      { name: "Drama", value: "Drama"  },
+      { name: "Ficção Científica", value: "Ficção Científica"  },
+      { name: "Romance", value: "Romance"  },
+      { name: "Terror", value: "Terror"  },
+    ];
   }
 
   salve(): void {
