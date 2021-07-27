@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
 import { CadastroFilmesComponent } from './cadastro-filmes/cadastro-filmes.component';
 import { ListagemFilmesComponent } from './listagem-filmes/listagem-filmes.component';
 import { MaterialModule } from '../shared/material/material.module';
@@ -14,7 +16,8 @@ import { AlertComponent } from '../shared/components/alert/alert.component';
     MaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    CamposModule
+    CamposModule,
+    InfiniteScrollModule
   ],
   declarations: [
     CadastroFilmesComponent,
