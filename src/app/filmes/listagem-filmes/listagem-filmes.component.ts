@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+
+import { debounceTime } from 'rxjs/operators';
+
 import { FilmesService } from 'src/app/core/filmes.service';
 import { ConfigParams } from 'src/app/shared/models/config-params';
 import { Filme } from 'src/app/shared/models/filme';
@@ -15,6 +18,7 @@ interface IGenderProps {
   styleUrls: ['./listagem-filmes.component.scss']
 })
 export class ListagemFilmesComponent implements OnInit {
+  readonly noPicture = 'http://www.termoparts.com.br/wp-content/uploads/2017/10no-image.jpg';
 
   config: ConfigParams = {
     page: 0,
@@ -33,7 +37,9 @@ export class ListagemFilmesComponent implements OnInit {
     this.filterList = this.createFilterList();
     this.listFilms();
 
-    this.filterList.get('text').valueChanges.subscribe((value: string) => {
+    this.filterList.get('text').valueChanges
+    .pipe(debounceTime(400))
+    .subscribe((value: string) => {
       this.config.search = value;
       this.resetSearch();
     });
