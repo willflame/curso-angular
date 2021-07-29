@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FilmesService } from 'src/app/core/filmes.service';
+import { ConfigParams } from 'src/app/shared/models/config-params';
 import { Filme } from 'src/app/shared/models/filme';
 
 interface IGenderProps {
@@ -15,8 +16,10 @@ interface IGenderProps {
 })
 export class ListagemFilmesComponent implements OnInit {
 
-  readonly qtdPage = 4;
-  page = 0;
+  config: ConfigParams = {
+    page: 0,
+    limit: 4,
+  }
   filmes: Filme[] = [];
   filterList: FormGroup;
   gender: IGenderProps[];
@@ -29,6 +32,16 @@ export class ListagemFilmesComponent implements OnInit {
   ngOnInit(): void {
     this.filterList = this.createFilterList();
     this.listFilms();
+
+    this.filterList.get('text').valueChanges.subscribe((value: string) => {
+      this.config.search = value;
+      this.resetSearch();
+    });
+
+    this.filterList.get('gender').valueChanges.subscribe((value: string) => {
+      this.config.field = { type: 'gender', value };
+      this.resetSearch();
+    });
 
     this.gender = [
       { name: "Ação", value: "Ação"  },
@@ -46,8 +59,8 @@ export class ListagemFilmesComponent implements OnInit {
   }
 
   private listFilms(): void {
-    this.page++;
-    this.filmeService.list(this.page, this.qtdPage).subscribe((filmes: Filme[]) => {
+    this.config.page++;
+    this.filmeService.list(this.config).subscribe((filmes: Filme[]) => {
       this.filmes.push(...filmes);
     });
   }
@@ -57,5 +70,11 @@ export class ListagemFilmesComponent implements OnInit {
       text: [''],
       gender: ['']
     });
+  }
+
+  private resetSearch() {
+    this.config.page = 0;
+    this.filmes = [];
+    this.listFilms();
   }
 }
