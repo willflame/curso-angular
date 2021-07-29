@@ -9,7 +9,7 @@
       Campo obrigatório
     </mat-error>
     <mat-error *ngIf="validateField.hasErrorValidate(formControl, 'minLength')">
-      Campo precisa te no mínimo {{ validateField.lengthValidate(formControl, 'min') }} caracteres
+      Campo precisa ter no mínimo {{ validateField.lengthValidate(formControl, 'min') }} caracteres
     </mat-error>
     <mat-error *ngIf="validateField.hasErrorValidate(formControl, 'maxLength')">
       Campo pode ter no máximo {{ validateField.lengthValidate(formControl, 'max') }} caracteres
