@@ -65,7 +65,12 @@ export class CadastroFilmesComponent implements OnInit {
     }
 
     const filme = this.cadastro.getRawValue() as Filme;
-    this.save(filme);
+    if (this.id) {
+      filme.id = this.id;
+      this.edit(filme);
+    } else {
+      this.save(filme);
+    }
   }
 
   resetForm(): void {
@@ -99,23 +104,55 @@ export class CadastroFilmesComponent implements OnInit {
 
   private save(filme: Filme): void {
     this.filmeService.save(filme).subscribe(() => {
-      this.openDialogSuccess();
+      const config = {
+        data: {
+          btnSuccess: "Ir para a listagem",
+          btnCancel: "Cadastrar um novo filme",
+          btnCancelColor: "primary",
+          existBtnClose: true
+        } as Alert
+      };
+
+      this.openDialogSuccess(config);
     },
     () => {
-      this.openDialogError();
+      const config = {
+        data: {
+          description: "Seu registro foi atualizado com sucesso!",
+          btnSuccess: "Ir para a listagem",
+        } as Alert
+      };
+
+      this.openDialogError(config);
     });
   }
 
-  private openDialogSuccess(): void {
-    const config = {
-      data: {
-        btnSuccess: "Ir para a listagem",
-        btnCancel: "Cadastrar um novo filme",
-        btnCancelColor: "primary",
-        existBtnClose: true
-      } as Alert
-    };
+  private edit(filme: Filme): void {
+    this.filmeService.edit(filme).subscribe(() => {
+      const config = {
+        data: {
+          description: "Seu registro foi atualizado com sucesso!",
+          btnSuccess: "Ir para a listagem",
+        } as Alert
+      };
 
+      this.openDialogSuccess(config);
+    },
+    () => {
+      const config = {
+        data: {
+          title: "Erro ao editar o registro",
+          description: "Não foi possível editar seu registro, por favor tentar novamente mais tarde",
+          btnSuccess: "Fechar",
+          btnSuccessColor: "warn"
+        } as Alert
+      };
+
+      this.openDialogError(config);
+    });
+  }
+
+  private openDialogSuccess(config: Alert): void {
     const dialogRef = this.dialog.open(AlertComponent, config);
 
     dialogRef.afterClosed().subscribe((value) => {
@@ -127,16 +164,7 @@ export class CadastroFilmesComponent implements OnInit {
     });
   }
 
-  private openDialogError(): void {
-    const config = {
-      data: {
-        title: "Erro ao salvar o registro",
-        description: "Não foi possível salvar seu registro, por favor tentar novamente mais tarde",
-        btnSuccess: "Fechar",
-        btnSuccessColor: "warn"
-      } as Alert
-    };
-
+  private openDialogError(config: Alert): void {
     this.dialog.open(AlertComponent, config);
   }
 }
