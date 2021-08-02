@@ -1,0 +1,22 @@
+<mat-list *ngIf="filme; else noRegistry">
+  <mat-list-item>Título: {{ filme.title }}</mat-list-item>
+  <mat-list-item>Data de lançamento: {{ filme.releaseDate | date: 'dd/MM/yyyy' }}</mat-list-item>
+  <mat-list-item>Gênero: {{ filme.gender }}</mat-list-item>
+  <mat-list-item class="break-line">Descrição: {{ filme.description }}</mat-list-item>
+  <mat-list-item>Nota:
+    <a [href]="filme.imdbLink" target="_blank" rel="noopener noreferrer">
+      {{ filme.imdbNote }}
+    </a>
+  </mat-list-item>
+  <img mat-card-image [src]="filme.imageUrl || noPicture" [alt]="filme.title">
+</mat-list>
+<mat-card>
+  <mat-card-actions>
+    <button color="accent" mat-raised-button (click)="edit()">Editar</button>
+    <button color="warn" mat-raised-button (click)="delete()">Excluir</button>
+  </mat-card-actions>
+</mat-card>
+
+<ng-template #noRegistry>
+  <h1 class="full-width">Nenhum filme encontrado</h1>
+</ng-template>
