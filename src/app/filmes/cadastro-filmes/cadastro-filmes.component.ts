@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FilmesService } from 'src/app/core/filmes.service';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { ValidarCamposService } from 'src/app/shared/components/campos/validar-campos.service';
@@ -19,7 +19,7 @@ interface IGenderProps {
   styleUrls: ['./cadastro-filmes.component.scss']
 })
 export class CadastroFilmesComponent implements OnInit {
-
+  id: number;
   cadastro: FormGroup;
   gender: IGenderProps[];
 
@@ -28,7 +28,8 @@ export class CadastroFilmesComponent implements OnInit {
     private fb: FormBuilder,
     private filmeService: FilmesService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   get f(): { [key: string]: AbstractControl; } {
@@ -36,8 +37,15 @@ export class CadastroFilmesComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.cadastro = this.createForm();
+    this.id = this.activatedRoute.snapshot.params['id'];
+    if (this.id) {
+      this.filmeService.getFilme(this.id)
+        .subscribe((filme: Filme) => {
+          this.cadastro = this.createForm(filme);
+        });
+    } else  {
+      this.cadastro = this.createForm(this.createdFilmeEmpty());
+    }
 
     this.gender = [
       { name: "Ação", value: "Ação"  },
@@ -64,16 +72,29 @@ export class CadastroFilmesComponent implements OnInit {
     this.cadastro.reset();
   }
 
-  private createForm(): FormGroup {
+  private createForm(filme: Filme): FormGroup {
     return this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(256)]],
-      imageUrl: ['', [Validators.minLength(10)]],
-      releaseDate: ['', [Validators.required]],
-      description: [''],
-      imdbNote: [0, [Validators.required, Validators.min(0), Validators.max(10)]],
-      imdbLink: ['', [Validators.minLength(10)]],
-      gender: ['', [Validators.required]]
+      title: [filme.title, [Validators.required, Validators.minLength(2), Validators.maxLength(256)]],
+      imageUrl: [filme.imageUrl, [Validators.minLength(10)]],
+      releaseDate: [filme.releaseDate, [Validators.required]],
+      description: [filme.description],
+      imdbNote: [filme.imdbNote, [Validators.required, Validators.min(0), Validators.max(10)]],
+      imdbLink: [filme.imdbLink, [Validators.minLength(10)]],
+      gender: [filme.gender, [Validators.required]]
     });
+  }
+
+  private createdFilmeEmpty(): FormGroup {
+    return {
+      id: null,
+      title: null,
+      imageUrl: null,
+      releaseDate: null,
+      description: null,
+      imdbNote: 0,
+      imdbLink: null,
+      gender: null
+    } as Filme;
   }
 
   private save(filme: Filme): void {
