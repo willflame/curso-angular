@@ -9,6 +9,7 @@ import { ListagemFilmesComponent } from './listagem-filmes/listagem-filmes.compo
 import { MaterialModule } from '../shared/material/material.module';
 import { CamposModule } from '../shared/components/campos/campos.module';
 import { AlertComponent } from '../shared/components/alert/alert.component';
+import { VisualizarFilmeComponent } from './visualizar-filme/visualizar-filme.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { AlertComponent } from '../shared/components/alert/alert.component';
     CadastroFilmesComponent,
     ListagemFilmesComponent,
     AlertComponent,
+    VisualizarFilmeComponent,
   ]
 })
 export class FilmesModule { }
