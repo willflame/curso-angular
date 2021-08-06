@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FilmesService } from 'src/app/core/filmes.service';
-import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
-import { ValidarCamposService } from 'src/app/shared/components/campos/validar-campos.service';
-import { Alert } from 'src/app/shared/models/alert';
-import { Filme } from 'src/app/shared/models/filme';
+import { FilmesService } from '../../core/filmes.service';
+import { AlertComponent } from '../../shared/components/alert/alert.component';
+import { ValidarCamposService } from '../../shared/components/campos/validar-campos.service';
+import { Alert } from '../../shared/models/alert';
+import { Filme } from '../../shared/models/filme';
 
 interface IGenderProps {
   name: string;
@@ -89,7 +89,7 @@ export class CadastroFilmesComponent implements OnInit {
     });
   }
 
-  private createdFilmeEmpty(): FormGroup {
+  private createdFilmeEmpty(): Filme {
     return {
       id: null,
       title: null,
@@ -98,30 +98,26 @@ export class CadastroFilmesComponent implements OnInit {
       description: null,
       imdbNote: 0,
       imdbLink: null,
-      gender: null
+      gender: null,
     } as Filme;
   }
 
   private save(filme: Filme): void {
     this.filmeService.save(filme).subscribe(() => {
       const config = {
-        data: {
           btnSuccess: "Ir para a listagem",
           btnCancel: "Cadastrar um novo filme",
           btnCancelColor: "primary",
           existBtnClose: true
-        } as Alert
-      };
+        } as Alert;
 
       this.openDialogSuccess(config);
     },
     () => {
       const config = {
-        data: {
           description: "Seu registro foi atualizado com sucesso!",
           btnSuccess: "Ir para a listagem",
-        } as Alert
-      };
+        } as Alert;
 
       this.openDialogError(config);
     });
@@ -130,30 +126,26 @@ export class CadastroFilmesComponent implements OnInit {
   private edit(filme: Filme): void {
     this.filmeService.edit(filme).subscribe(() => {
       const config = {
-        data: {
           description: "Seu registro foi atualizado com sucesso!",
           btnSuccess: "Ir para a listagem",
-        } as Alert
-      };
+        } as Alert;
 
       this.openDialogSuccess(config);
     },
     () => {
       const config = {
-        data: {
           title: "Erro ao editar o registro",
           description: "Não foi possível editar seu registro, por favor tentar novamente mais tarde",
           btnSuccess: "Fechar",
           btnSuccessColor: "warn"
-        } as Alert
-      };
+        } as Alert;
 
       this.openDialogError(config);
     });
   }
 
   private openDialogSuccess(config: Alert): void {
-    const dialogRef = this.dialog.open(AlertComponent, config);
+    const dialogRef = this.dialog.open(AlertComponent, { data: {...config}});
 
     dialogRef.afterClosed().subscribe((value) => {
       if (value) {
@@ -165,6 +157,6 @@ export class CadastroFilmesComponent implements OnInit {
   }
 
   private openDialogError(config: Alert): void {
-    this.dialog.open(AlertComponent, config);
+    this.dialog.open(AlertComponent, { data: {...config}});
   }
 }

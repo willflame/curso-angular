@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 
 import { debounceTime } from 'rxjs/operators';
 
-import { FilmesService } from 'src/app/core/filmes.service';
-import { ConfigParams } from 'src/app/shared/models/config-params';
-import { Filme } from 'src/app/shared/models/filme';
+import { FilmesService } from '../../core/filmes.service';
+import { ConfigParams } from '../../shared/models/config-params';
+import { Filme } from '../../shared/models/filme';
 
 interface IGenderProps {
   name: string;

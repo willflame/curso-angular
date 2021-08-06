@@ -9,7 +9,7 @@ import { ListagemFilmesComponent } from './listagem-filmes/listagem-filmes.compo
 import { MaterialModule } from '../shared/material/material.module';
 import { CamposModule } from '../shared/components/campos/campos.module';
 import { AlertComponent } from '../shared/components/alert/alert.component';
-import { VisualizarFilmeComponent } from './visualizar-filme/visualizar-filme.component';
+import { VisualizarFilmesComponent } from './visualizar-filmes/visualizar-filmes.component';
 
 @NgModule({
   imports: [
@@ -24,7 +24,7 @@ import { VisualizarFilmeComponent } from './visualizar-filme/visualizar-filme.co
     CadastroFilmesComponent,
     ListagemFilmesComponent,
     AlertComponent,
-    VisualizarFilmeComponent,
+    VisualizarFilmesComponent,
   ]
 })
 export class FilmesModule { }

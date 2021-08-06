@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { FilmesService } from 'src/app/core/filmes.service';
-import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
-import { Alert } from 'src/app/shared/models/alert';
+import { FilmesService } from '../../core/filmes.service';
+import { AlertComponent } from '../../shared/components/alert/alert.component';
+import { Alert } from '../../shared/models/alert';
 import { Filme } from '../../shared/models/filme';
 
 @Component({
   selector: 'dio-visualizar-filmes',
   templateUrl: './visualizar-filmes.component.html',
-  styleUrls: ['./visualizar-filmes.component.css']
+  styleUrls: ['./visualizar-filmes.component.scss']
 })
 export class VisualizarFilmesComponent implements OnInit {
   readonly noPicture = 'http://www.termoparts.com.br/wp-content/uploads/2017/10no-image.jpg';
